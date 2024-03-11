@@ -1,9 +1,10 @@
 #include "MainFrame.h"
 
+
 MainFrame::MainFrame(const std::string& title,const wxSize& size)
        : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, size)
 {
-
+    // Create some components
     auto panel = new wxScrolled<wxPanel>(this, wxID_ANY);
     panel->SetScrollRate(0, FromDIP(10));
     wxBoxSizer* topsizer = new wxBoxSizer( wxVERTICAL );
