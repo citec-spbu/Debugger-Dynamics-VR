@@ -8,7 +8,8 @@ bool MyApp::OnInit()
     
     MainFrame *frame = new MainFrame(Options::APP_NAME,
                                          wxSize(Options::WINDOW_WIDTH, Options::WINDOW_HEIGHT));
-    frame->SetIcons(wxIconBundle("assets/icon.png"));
+
+    frame->SetIcons(wxIconBundle(Options::APP_LOGO_PATH));
     frame->Show(true);
 
     return true;
