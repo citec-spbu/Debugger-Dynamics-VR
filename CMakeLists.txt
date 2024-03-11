@@ -11,8 +11,7 @@ set(wxWidgets_ROOT_DIR "C:/Program Files (x86)/wxWidgets")
 set(wxWidgets_LIB_DIR "C:/Program Files (x86)/wxWidgets/lib/gcc_x64_dll")
 
 # Sources
-set(SOURCES src/Main.cpp src/frames/MainFrame.cpp)
-
+set(SOURCES src/Main.cpp src/frames/MainFrame.cpp src/elements/ParamContainer.cpp)
 project(${PROJECT_NAME} VERSION 0.1)
 
 # Find WxWidgets
