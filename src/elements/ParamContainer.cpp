@@ -52,6 +52,6 @@ void ParamContainer::setValue(double value)
 void ParamContainer::OnEnter(wxCommandEvent& evt)
 {
     wxCommandEvent event(EVT_P_CONTAINER, AEvents::MainFrameMenuBarIDs::appID_INPUT_FROM_CONTAINERS);
-    event.SetString(param_name_disp->GetValue());
+    event.SetString(param_name_disp->GetValue() + "=" + param_value_disp->GetValue());
     wxPostEvent(m_parent,event);
 }

@@ -27,22 +27,20 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     topsizer = new wxBoxSizer( wxVERTICAL );    
 
     panel->SetSizerAndFit(topsizer);
-
-    addContainer("SomeParams");
-    addContainer("SomeParams1");
-    addContainer("SomeParams2");
-    addContainer("SomeParams3");
-    addContainer("SomeParams4");
-    deleteContainer("SomeParams");
-    deleteContainer("SomeParams3");
-    addContainer("SomeParams11");
-    addContainer("SomeParams12");
+    // !!! Must Correct in the future 
+    protocol = Utility::IOFileProtocol("C:\\Projects\\university projects\\TestPrj_cut_Pack\\Windows\\TestPrj\\Content\\dbutil\\params_out.txt",
+     "C:\\Projects\\university projects\\TestPrj_cut_Pack\\Windows\\TestPrj\\Content\\dbutil\\params_in.txt");
+    send_buffer.push({" "});
 }
 // Containers functions
-bool MainFrame::addContainer(const std::string& param, double value)
+bool MainFrame::addContainer(const std::string& param, double value, bool update)
 {
     if(containers.find(param) != containers.end())
     {
+        if(update)
+        {
+            return updateContainer(param, value);
+        }
         return false;
     }
     ParamContainer* container = new ParamContainer(panel, wxID_ANY, param, value);   
@@ -56,7 +54,7 @@ bool MainFrame::addContainer(const std::string& param, double value)
     {
         containers[param] = container;    
         return true;
-    }
+    }    
     return false;
 }
 
@@ -72,6 +70,7 @@ bool MainFrame::deleteContainer(const std::string& param)
 }
 bool MainFrame::updateContainer(const std::string& param, double n_value)
 {
+
     if(containers.find(param) != containers.end())
     {
         containers[param]->setValue(n_value);
@@ -83,8 +82,45 @@ bool MainFrame::updateContainer(const std::string& param, double n_value)
 //Events functions
 void MainFrame::inputEventFromPContainers(wxCommandEvent &event)
 {    
-    addContainer("SomeParams10");
-    panel->Layout(); // For correctly show new Container
+    send_buffer.push({event.GetString().ToStdString()});
+}
+
+void MainFrame::processRead()
+{
+    // Calculate delta
+    static clock_t last_time = 0; 
+    clock_t time = std::clock();
+    double delta = time - last_time;
+    last_time = time;
+    //
+    buffer_time += delta;
+    
+    if(buffer_time > 1000.0 / Options::EXCHANGE_PER_SECOND)
+    {
+        buffer_time = 0.0;    
+        std::vector<std::string> send_data = {};
+        if(!send_buffer.empty())
+        {
+            send_data = std::move(send_buffer.front()); 
+            send_buffer.pop();           
+        }
+        auto data = protocol.exchange(send_data);
+        if(data)
+        {
+            for(auto& item : *data)
+            {
+                if(!item.empty())
+                {
+                    size_t split_index = item.find('=');
+                    addContainer(item.substr(0,split_index), std::stod(item.substr(split_index + 1, item.size())), true);
+                    
+                }
+            }
+            panel->FitInside();
+
+        }
+
+    }
 }
 
 // Realise in the future   

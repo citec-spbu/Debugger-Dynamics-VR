@@ -31,6 +31,8 @@ namespace Options
     constexpr char APP_NAME[] = "Dynamics-VR-Debuger"; 
     constexpr int WINDOW_WIDTH = 300;
     constexpr int WINDOW_HEIGHT = 400;
+    // App exchange options
+    constexpr float EXCHANGE_PER_SECOND = 2;
 
     // ParamContainer options
     constexpr float PARAM_CONTAINER_DELIM = 0.4;
