@@ -7,10 +7,11 @@ IOFileProtocol::IOFileProtocol(const std::string& _path_i, const std::string& _p
 {
     path_i = _path_i;
     path_o = _path_o;
-    input_s.open(path_i);
-    output_s.open(path_o);
-    input_lock = boost::interprocess::file_lock(path_i.c_str());
-    output_lock = boost::interprocess::file_lock(path_o.c_str());
+    if(isOkey())
+    {
+        input_lock = boost::interprocess::file_lock(path_i.c_str());
+        output_lock = boost::interprocess::file_lock(path_o.c_str());
+    }
 }
 
 IOFileProtocol::IOFileProtocol(IOFileProtocol&& protocol)
@@ -36,7 +37,7 @@ IOFileProtocol& IOFileProtocol::operator=(IOFileProtocol&& protocol)
 
 bool IOFileProtocol::isOkey()
 {
-    if(input_s.is_open() && output_s.is_open())
+    if(std::filesystem::exists(path_i) && std::filesystem::exists(path_o))
     {
         return true;
     }

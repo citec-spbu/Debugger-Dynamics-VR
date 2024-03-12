@@ -15,7 +15,8 @@ set(wxWidgets_ROOT_DIR "C:/Program Files (x86)/wxWidgets")
 set(wxWidgets_LIB_DIR "C:/Program Files (x86)/wxWidgets/lib/gcc_x64_dll")
 set(BOOST_ROOT "C:/Program Files (x86)/Boost")
 # Sources
-set(SOURCES src/Main.cpp src/frames/MainFrame.cpp src/elements/ParamContainer.cpp src/utility/protocol.cpp)
+set(SOURCES src/Main.cpp
+ src/frames/MainFrame.cpp src/elements/ParamContainer.cpp src/utility/protocol.cpp src/utility/config.cpp)
 
 
 

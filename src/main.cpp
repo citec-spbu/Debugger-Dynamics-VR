@@ -10,6 +10,10 @@ bool MyApp::OnInit()
 {
     wxInitAllImageHandlers();
     
+    std::ofstream log_file(Options::LOG_FILE_PATH, std::ios::trunc | std::ios::out);
+
+    delete wxLog::SetActiveTarget(new wxLogStream(&log_file));
+
     frame = new MainFrame(Options::APP_NAME,
                                          wxSize(Options::WINDOW_WIDTH, Options::WINDOW_HEIGHT));
 
