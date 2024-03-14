@@ -2,7 +2,7 @@
 
 namespace Utility
 {
-
+// Constructors    
 IOFileProtocol::IOFileProtocol(const std::string& _path_i, const std::string& _path_o)
 {
     path_i = _path_i;
@@ -34,7 +34,7 @@ IOFileProtocol& IOFileProtocol::operator=(IOFileProtocol&& protocol)
     boost::core::invoke_swap(output_lock, protocol.output_lock);
     return *this;
 }
-
+// Functions
 bool IOFileProtocol::isOkey()
 {
     if(std::filesystem::exists(path_i) && std::filesystem::exists(path_o))
@@ -57,12 +57,13 @@ std::optional<std::vector<std::string>> IOFileProtocol::exchange(const std::vect
     std::vector<std::string> result;    
     // Locked section
     {
+        // Input section
         std::string buff;        
         while (std::getline(input_s, buff))
         {
             result.push_back(std::move(buff));
         } 
-      
+        // Output section
         boost::interprocess::scoped_lock lock_o(output_lock);    
         output_s.seekp(0, std::ios_base::beg);
         for(const auto& item : data)
@@ -70,6 +71,7 @@ std::optional<std::vector<std::string>> IOFileProtocol::exchange(const std::vect
             output_s << item << "\n";
         }
         output_s.flush();        
+        // Clear input file (protocol rule)
         if(result.size() > 0)
         {
             boost::interprocess::scoped_lock lock_i(input_lock);

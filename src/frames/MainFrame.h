@@ -1,11 +1,14 @@
+#ifndef MainFrame_H
+#define MainFrame_H
+
 #include <wx/wx.h>
 #include <map>
 #include <ctime>
 #include <queue>
-
 #include "../elements/ParamContainer.h"
 #include "../utility/protocol.h"
 #include "../utility/config.h"
+
 class MainFrame : public wxFrame
 {
 private: 
@@ -25,17 +28,15 @@ private:
     Utility::Config config;
     double buffer_time;
 public:
-    MainFrame(const std::string& title,const wxSize& size);
-
-    
+    MainFrame(const std::string& title,const wxSize& size);    
     // Containers functions
     bool addContainer(const std::string& param, double value = 0.0, bool update = false);
     bool deleteContainer(const std::string& param);
     bool updateContainer(const std::string& param_name, double n_value);
-
     // Loop function
     void processRead();
 protected:
 	DECLARE_EVENT_TABLE()
-
 };
+
+#endif

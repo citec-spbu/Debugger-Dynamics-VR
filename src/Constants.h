@@ -12,22 +12,20 @@ namespace AEvents
             appID_INPUT_FROM_CONTAINERS, 
             appID_ADD_PARAM
         };
-    }
+    } //namespace MainFrameMenuBarIDs
     namespace ParamContainerIDs
     {
         enum
         {
             inpID_TEXT_CTRL = 100,
         };
-    }
-
-}
+    } //namespace ParamContainerIDs
+} // namespace AEvents
 
 namespace Options
 {
     // Files
-    constexpr char APP_LOGO_PATH[] = "assets/icon.png";
-
+    constexpr char APP_LOGO_PATH[] = "icon.png";
     // App options
     constexpr char APP_NAME[] = "Dynamics-VR-Debuger"; 
     constexpr char CONFIG_PATH[] = "config.txt";
@@ -38,10 +36,8 @@ namespace Options
     constexpr char DEFAULT_IN_FILE_PATH[] = "input.txt";
     constexpr char DEFAULT_OUT_FILE_PATH[] = "output.txt";
     constexpr float EXCHANGE_PER_SECOND = 2;
-
     // ParamContainer options
     constexpr float PARAM_CONTAINER_DELIM = 0.4;
     constexpr int PARAM_CONTAINER_HEIGHT = 20;
     constexpr int PARAM_BORDER_SIZE = 2;
-
-}
+} // namespace Options

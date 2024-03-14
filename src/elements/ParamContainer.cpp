@@ -1,9 +1,10 @@
 #include "ParamContainer.h"
 
+// Events
 wxDEFINE_EVENT(EVT_P_CONTAINER, wxCommandEvent);
 
 BEGIN_EVENT_TABLE(ParamContainer, wxPanel)
-   EVT_TEXT_ENTER(wxID_ANY, ParamContainer::OnEnter)
+   EVT_TEXT_ENTER(wxID_ANY, ParamContainer::OnEnter)   
 END_EVENT_TABLE()
 
 
@@ -12,7 +13,7 @@ void ParamContainer::init(wxWindow *parent, int id)
     m_parent = parent;
 
     wxBoxSizer* topsizer = new wxBoxSizer( wxHORIZONTAL );
-
+    // Add visible and controll texts
     param_name_disp = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition,
          wxSize(Options::WINDOW_WIDTH * Options::PARAM_CONTAINER_DELIM,Options::PARAM_CONTAINER_HEIGHT), // Size
              wxTE_READONLY); // Flags
@@ -40,7 +41,7 @@ ParamContainer::ParamContainer(wxWindow *parent, int id, const std::string& para
 {
     init(parent, id);
     param_name_disp->SetValue(param_name);
-    param_value_disp->SetValue(wxString::Format(wxT("%f"), value));
+    param_value_disp->SetValue(wxString::Format(wxT("%f"), value));    
 }
 
 void ParamContainer::setValue(double value)
@@ -48,9 +49,9 @@ void ParamContainer::setValue(double value)
     param_value_disp->SetValue(wxString::Format(wxT("%f"), value));
 }
 
-// Events
 void ParamContainer::OnEnter(wxCommandEvent& evt)
 {
+    // Send Event to MainFrame for sending with specific param and value
     wxCommandEvent event(EVT_P_CONTAINER, AEvents::MainFrameMenuBarIDs::appID_INPUT_FROM_CONTAINERS);
     event.SetString(param_name_disp->GetValue() + "=" + param_value_disp->GetValue());
     wxPostEvent(m_parent,event);

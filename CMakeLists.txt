@@ -9,6 +9,13 @@ set(ENABLE_TESTING OFF)
 # Default 'sets'
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Set debug value if not set release
+string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
+if (build_type STREQUAL debug)
+    set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/exec/debug)
+else()
+    set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/exec/debug)
+endif()
 
 # Set your own paths
 set(wxWidgets_ROOT_DIR "C:/Program Files (x86)/wxWidgets")
@@ -34,7 +41,14 @@ find_package(wxWidgets REQUIRED COMPONENTS net core base)
 
 # Add executables
 add_executable(${PROJECT_NAME} ${SOURCES})
-
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/assets/ $<TARGET_FILE_DIR:${PROJECT_NAME}> # Copy assets files
+                       )
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory
+                        ${CMAKE_SOURCE_DIR}/libs/ $<TARGET_FILE_DIR:${PROJECT_NAME}> # Copy assets files
+                        )                       
 # Add library
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES})
@@ -52,3 +66,5 @@ if(${ENABLE_TESTING})
     target_include_directories(test_protocol PUBLIC ${Boost_INCLUDE_DIRS})
     add_test(TestProtocol test_protocol)
 endif()    
+
+

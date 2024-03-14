@@ -6,11 +6,10 @@
 #include <fstream>
 #include <optional>
 #include <string>
-
-// MUST rewrite file reading and writing / locking 
+ 
 namespace Utility
 {
-    
+// In the future rewrite by using winapi -> this allows not to use the boost library.   
 class IOFileProtocol
 {
 private:    
@@ -24,14 +23,13 @@ public:
     // Delete constructors, because file_lock isn't support multiple lock for one file
     IOFileProtocol(const IOFileProtocol&) = delete;
     IOFileProtocol& operator=(const IOFileProtocol&) = delete;
-
+    // Constructors
     IOFileProtocol() = default;
     IOFileProtocol(IOFileProtocol&&);
-    IOFileProtocol& operator=(IOFileProtocol&&);
     IOFileProtocol(const std::string& _path_i, const std::string& _path_o);
+    IOFileProtocol& operator=(IOFileProtocol&&);
+    // Functions
     bool isOkey();
-
     std::optional<std::vector<std::string>> exchange(const std::vector<std::string>& data);
-
 };
 } // namespace
