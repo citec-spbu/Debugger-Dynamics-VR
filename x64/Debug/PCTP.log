@@ -1,12 +1,16 @@
-﻿  data_tools.cpp
+﻿  PCTP.cpp
+C:\Users\user\source\repos\PCTP\lib_mac.h(13,1): warning C4005: _CRT_SECURE_NO_WARNINGS: изменение макроопределения
+C:\Users\user\source\repos\PCTP\PCTP.cpp : message : см. предыдущее определение "_CRT_SECURE_NO_WARNINGS"
+  data_tools.cpp
 C:\Users\user\source\repos\PCTP\lib_mac.h(13,1): warning C4005: _CRT_SECURE_NO_WARNINGS: изменение макроопределения
 C:\Users\user\source\repos\PCTP\data_tools.cpp : message : см. предыдущее определение "_CRT_SECURE_NO_WARNINGS"
-C:\Users\user\source\repos\PCTP\data_tools.cpp(28,40): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(28,40): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(69,5): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(108,6): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(131,6): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(167,40): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(167,40): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(171,5): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(27,40): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(27,40): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(68,5): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(107,6): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(132,6): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(168,40): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(168,40): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(172,5): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
+  Создание кода...
   PCTP.vcxproj -> C:\Users\user\source\repos\PCTP\x64\Debug\PCTP.exe

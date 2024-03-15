@@ -9,7 +9,7 @@ void change_data(std::map<std::string, double>& data);
 
 void get_data_from_startfile(std::string path, std::map<std::string, double>& data, HANDLE& logfile);
 
-void get_data_from_config(std::string path, int& delay, HANDLE& logfile);
+void get_data_from_config(std::string path, int& delay, bool& print_update_info, HANDLE& logfile);
 
 void logging(HANDLE& logfile, std::string info);
 

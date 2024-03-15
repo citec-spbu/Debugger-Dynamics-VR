@@ -21,6 +21,7 @@ int main(int argc, char* argv[]){
     string path = get_path_dir(argv[0]);
     char input;
     int delay;
+    bool print_update_info;
     map <string, double> data;
 
     CreateDirectoryA((path + "params").c_str(), NULL);
@@ -29,7 +30,7 @@ int main(int argc, char* argv[]){
     HANDLE infile = open_file(path + "params\\params_in.txt");
     HANDLE outfile = open_file(path + "params\\params_out.txt");
 
-    get_data_from_config(path, delay, logfile);
+    get_data_from_config(path, delay, print_update_info, logfile);
     get_data_from_startfile(path, data, logfile);
     clear_file(logfile);
     clear_file(infile);
@@ -61,8 +62,11 @@ int main(int argc, char* argv[]){
             if (LockFile(outfile, 0, 0, MAXDWORD, MAXDWORD)) {
                 if (print_data_in_outfile(outfile, logfile, data)) {
                     logging(logfile, "The information has been succsessfully updated to the outfile.");
-                    cout << endl << "Update:" << endl;
-                    print_all_data(data);
+
+                    if (print_update_info) {
+                        cout << endl << "Update:" << endl;
+                        print_all_data(data);
+                    }
                 }
 
                 UnlockFile(outfile, 0, 0, MAXDWORD, MAXDWORD);

@@ -5,18 +5,13 @@ C:\Users\user\source\repos\PCTP\data_tools.cpp(27,40): warning C4267: иници
 C:\Users\user\source\repos\PCTP\data_tools.cpp(27,40): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
 C:\Users\user\source\repos\PCTP\data_tools.cpp(68,5): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
 C:\Users\user\source\repos\PCTP\data_tools.cpp(107,6): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(130,6): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(166,40): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(166,40): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
-C:\Users\user\source\repos\PCTP\data_tools.cpp(170,5): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
-  file_tools.cpp
-C:\Users\user\source\repos\PCTP\lib_mac.h(13,1): warning C4005: _CRT_SECURE_NO_WARNINGS: изменение макроопределения
-C:\Users\user\source\repos\PCTP\file_tools.cpp : message : см. предыдущее определение "_CRT_SECURE_NO_WARNINGS"
-  PCTP.cpp
-C:\Users\user\source\repos\PCTP\lib_mac.h(13,1): warning C4005: _CRT_SECURE_NO_WARNINGS: изменение макроопределения
-C:\Users\user\source\repos\PCTP\PCTP.cpp : message : см. предыдущее определение "_CRT_SECURE_NO_WARNINGS"
+C:\Users\user\source\repos\PCTP\data_tools.cpp(132,6): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(168,40): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(168,40): warning C4267: инициализация: преобразование из "size_t" в "const int"; возможна потеря данных
+C:\Users\user\source\repos\PCTP\data_tools.cpp(172,5): warning C4267: аргумент: преобразование из "size_t" в "DWORD"; возможна потеря данных
   Создание кода
-  Previous IPDB not found, fall back to full compilation.
-  All 335 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  2 of 335 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    4 functions had inline decision re-evaluated but remain unchanged
   Создание кода завершено
   PCTP.vcxproj -> C:\Users\user\source\repos\PCTP\x64\Release\PCTP.exe

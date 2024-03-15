@@ -96,13 +96,13 @@ bool read_data_from_infile(HANDLE& infile, HANDLE& logfile, map<string, double>&
 	return true;
 }
 
-void get_data_from_config(string path, int& delay, HANDLE& logfile) {
+void get_data_from_config(string path, int& delay, bool& print_update_info, HANDLE& logfile) {
 	map <string, double> data;
 	HANDLE config = open_file(path + "config.txt");
 
 	if (file_empty(config)) {
 		_OVERLAPPED overlapped1 = { 0 };
-		string line = "delay=100";
+		string line = "delay=100\nprint_update_info=1";
 
 		if (!WriteFile(config, line.c_str(), line.size(), 0, &overlapped1)) {
 			logging(logfile, "Error writing to the config!");
@@ -110,10 +110,12 @@ void get_data_from_config(string path, int& delay, HANDLE& logfile) {
 		}
 
 		delay = 100;
+		print_update_info = 1;
 	}
 	else {
 		read_data_from_infile(config, logfile, data);
 		delay = (int)data["delay"];
+		print_update_info = (bool)data["print_update_info"];
 	}
 
 }

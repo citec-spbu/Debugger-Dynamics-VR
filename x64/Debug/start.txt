@@ -1,0 +1,2 @@
+SomeParams=0.000000
+testParams=0.000001

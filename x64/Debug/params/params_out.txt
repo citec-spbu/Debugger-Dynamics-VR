@@ -1,2 +1,2 @@
-SomeParams=1702.000000
+SomeParams=13.000000
 testParams=0.000001
