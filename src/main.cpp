@@ -21,5 +21,10 @@ bool MyApp::OnInit()
 
 void MyApp::onIdle(wxIdleEvent& evt)
 {
-    frame->processRead();
+    if(!evt.MoreRequested())
+    {
+        evt.RequestMore();
+    }
+
+    frame->processIO();
 }   

@@ -122,7 +122,7 @@ void MainFrame::inputEventFromPContainers(wxCommandEvent &event) // Event after 
     send_buffer.push({event.GetString().ToStdString()});
 }
 // Main Loop function
-void MainFrame::processRead()
+void MainFrame::processIO()
 {
     // Calculate delta
     static clock_t last_time = 0; 

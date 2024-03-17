@@ -34,7 +34,7 @@ public:
     bool deleteContainer(const std::string& param);
     bool updateContainer(const std::string& param_name, double n_value);
     // Loop function
-    void processRead();
+    void processIO();
 protected:
 	DECLARE_EVENT_TABLE()
 };

@@ -35,7 +35,7 @@ namespace Options
     // App exchange options
     constexpr char DEFAULT_IN_FILE_PATH[] = "input.txt";
     constexpr char DEFAULT_OUT_FILE_PATH[] = "output.txt";
-    constexpr float EXCHANGE_PER_SECOND = 2;
+    constexpr float EXCHANGE_PER_SECOND = 30;
     // ParamContainer options
     constexpr float PARAM_CONTAINER_DELIM = 0.4;
     constexpr int PARAM_CONTAINER_HEIGHT = 20;
