@@ -6,7 +6,6 @@ Parameter change testing program
 #include "data_tools.h"
 #include "file_tools.h"
 
-using namespace std;
 
 void exit(HANDLE& infile, HANDLE& outfile, HANDLE& logfile, int res) {
     CloseHandle(infile);
@@ -18,11 +17,11 @@ void exit(HANDLE& infile, HANDLE& outfile, HANDLE& logfile, int res) {
 
 int main(int argc, char* argv[]){
 
-    string path = get_path_dir(argv[0]);
+    std::string path = get_path_dir(argv[0]);
     char input;
     int delay;
     bool print_update_info;
-    map <string, double> data;
+    std::map <std::string, double> data;
 
     CreateDirectoryA((path + "params").c_str(), NULL);
 
@@ -42,13 +41,13 @@ int main(int argc, char* argv[]){
             if (read_data_from_infile(infile, logfile, data)) {
                 logging(logfile, "The information was succsessfully read from the infile.");
 
-                cout << endl << "All data inputs:" << endl;
+                std::cout << std::endl << "All data inputs:" << std::endl;
                 print_all_data(data);
                 clear_file(infile);
 
                 if (print_data_in_outfile(outfile, logfile, data)) {
                     logging(logfile, "The information has been succsessfully written to the outfile.");
-                    cout << "All data puts:" << endl;
+                    std::cout << "All data puts:" << std::endl;
                     print_all_data(data);
                 }
             }
@@ -64,7 +63,7 @@ int main(int argc, char* argv[]){
                     logging(logfile, "The information has been succsessfully updated to the outfile.");
 
                     if (print_update_info) {
-                        cout << endl << "Update:" << endl;
+                        std::cout << std::endl << "Update:" << std::endl;
                         print_all_data(data);
                     }
                 }

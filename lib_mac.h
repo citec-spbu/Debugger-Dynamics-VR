@@ -10,4 +10,4 @@
 #include <map>
 
 #define sleep(x) std::this_thread::sleep_for(std::chrono::milliseconds(x))
-#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS 1
