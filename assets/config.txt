@@ -1,0 +1,2 @@
+InputFILE=C:\Projects\university projects\TestPrj_cut_Pack\Windows\TestPrj\Content\dbutil\params_out.txt
+OutputFILE=C:\Projects\university projects\TestPrj_cut_Pack\Windows\TestPrj\Content\dbutil\params_in.txt
