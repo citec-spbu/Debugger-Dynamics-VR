@@ -1,5 +1,5 @@
 #include "protocol.h"
-
+#include <iostream>
 namespace Utility
 {
 // Constructors    
@@ -46,14 +46,12 @@ bool IOFileProtocol::isOkey()
 
 std::optional<std::vector<std::string>> IOFileProtocol::exchange(const std::vector<std::string>& data)
 {
-
     input_s.open(path_i);
-    output_s.open(path_o);
-    if(!isOkey() && input_s.peek() != std::ifstream::traits_type::eof())
+    output_s.open(path_o, std::ios_base::app);
+    if(!isOkey())
     {
         return std::nullopt;
     }
-
     std::vector<std::string> result;    
     // Locked section
     {

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <limits>
 // Events
 namespace AEvents
 {
@@ -41,4 +41,5 @@ namespace Options
     constexpr int PARAM_CONTAINER_HEIGHT = 20;
     constexpr int PARAM_BORDER_SIZE = 2;
     constexpr double PARAM_INCREMENT_VALUE = 0.25;
+    constexpr double PARAM_MAX_VALUE = std::numeric_limits<double>().max();
 } // namespace Options

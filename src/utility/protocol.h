@@ -15,7 +15,7 @@ class IOFileProtocol
 private:    
     std::string path_i;
     std::string path_o;
-    std::ifstream input_s;
+    std::fstream input_s;
     std::ofstream output_s;
     boost::interprocess::file_lock input_lock;
     boost::interprocess::file_lock output_lock;
