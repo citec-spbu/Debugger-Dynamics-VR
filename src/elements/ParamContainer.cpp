@@ -4,7 +4,7 @@
 wxDEFINE_EVENT(EVT_P_CONTAINER, wxCommandEvent);
 
 BEGIN_EVENT_TABLE(ParamContainer, wxPanel)
-   EVT_TEXT_ENTER(wxID_ANY, ParamContainer::OnEnter)   
+   EVT_SPINCTRLDOUBLE(wxID_ANY, ParamContainer::OnEnter)   
 END_EVENT_TABLE()
 
 
@@ -17,11 +17,10 @@ void ParamContainer::init(wxWindow *parent, int id)
     param_name_disp = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition,
          wxSize(Options::WINDOW_WIDTH * Options::PARAM_CONTAINER_DELIM,Options::PARAM_CONTAINER_HEIGHT), // Size
              wxTE_READONLY); // Flags
-    param_value_disp = new wxTextCtrl( this, wxID_ANY, "", wxDefaultPosition,
-         wxSize(Options::WINDOW_WIDTH *(1 - Options::PARAM_CONTAINER_DELIM),Options::PARAM_CONTAINER_HEIGHT), // Size
-          wxTE_PROCESS_ENTER, // Flags
-            wxTextValidator(wxFILTER_NUMERIC)); // Validator for float numbers
-
+    param_value_disp = new wxSpinCtrlDouble( this, wxID_ANY, "", wxDefaultPosition,
+         wxSize(Options::WINDOW_WIDTH *(1 - Options::PARAM_CONTAINER_DELIM),Options::PARAM_CONTAINER_HEIGHT) // Size
+    );
+    param_value_disp->SetIncrement(Options::PARAM_INCREMENT_VALUE);
     topsizer->Add(
         param_name_disp, 0, wxEXPAND, FromDIP(Options::PARAM_BORDER_SIZE));  
     topsizer->Add(
@@ -49,10 +48,10 @@ void ParamContainer::setValue(double value)
     param_value_disp->SetValue(wxString::Format(wxT("%f"), value));
 }
 
-void ParamContainer::OnEnter(wxCommandEvent& evt)
+void ParamContainer::OnEnter(wxSpinDoubleEvent& evt)
 {
     // Send Event to MainFrame for sending with specific param and value
     wxCommandEvent event(EVT_P_CONTAINER, AEvents::MainFrameMenuBarIDs::appID_INPUT_FROM_CONTAINERS);
-    event.SetString(param_name_disp->GetValue() + "=" + param_value_disp->GetValue());
+    event.SetString(wxString::Format("%s=%f", param_name_disp->GetValue(), param_value_disp->GetValue()));
     wxPostEvent(m_parent,event);
 }

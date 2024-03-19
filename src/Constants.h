@@ -40,4 +40,5 @@ namespace Options
     constexpr float PARAM_CONTAINER_DELIM = 0.4;
     constexpr int PARAM_CONTAINER_HEIGHT = 20;
     constexpr int PARAM_BORDER_SIZE = 2;
+    constexpr double PARAM_INCREMENT_VALUE = 0.25;
 } // namespace Options
