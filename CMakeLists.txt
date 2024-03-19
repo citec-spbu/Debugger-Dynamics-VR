@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.9)
 
 set(PROJECT_NAME ui_debug) 
 
@@ -18,8 +18,8 @@ else()
 endif()
 
 # Set your own paths
-set(wxWidgets_ROOT_DIR "C:/Program Files (x86)/wxWidgets")
-set(wxWidgets_LIB_DIR "C:/Program Files (x86)/wxWidgets/lib/gcc_x64_dll")
+set(wxWidgets_ROOT_DIR "C:\\wxWidgets-3.2.4")
+set(wxWidgets_LIB_DIR "C:\\wxWidgets-3.2.4\\lib\\gcc_lib")
 set(BOOST_ROOT "C:/Program Files (x86)/Boost")
 # Sources
 set(SOURCES src/Main.cpp
@@ -35,9 +35,9 @@ set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
 # Find WxWidgets
-find_package(wxWidgets REQUIRED COMPONENTS net core base)
-
-
+set(wxWidgets_USE_STATIC ON)
+set(wxWidgets_USE_UNICODE ON)
+find_package(wxWidgets REQUIRED COMPONENTS core base net)
 
 # Add executables
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -45,10 +45,7 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
                     COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/assets/ $<TARGET_FILE_DIR:${PROJECT_NAME}> # Copy assets files
                        )
-add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                        ${CMAKE_SOURCE_DIR}/libs/ $<TARGET_FILE_DIR:${PROJECT_NAME}> # Copy assets files
-                        )                       
+                  
 # Add library
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES})

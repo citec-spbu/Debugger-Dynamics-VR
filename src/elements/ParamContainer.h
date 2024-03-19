@@ -10,7 +10,8 @@ wxDECLARE_EVENT(EVT_P_CONTAINER, wxCommandEvent);
 
 class ParamContainer : public wxPanel
 {
-private:    
+private:  
+      
     wxTextCtrl* param_name_disp;
     wxTextCtrl* param_value_disp; 
     wxWindow* m_parent;
