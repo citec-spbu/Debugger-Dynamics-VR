@@ -61,13 +61,16 @@ std::optional<std::vector<std::string>> IOFileProtocol::exchange(const std::vect
             result.push_back(std::move(buff));
         } 
         // Output section
-        boost::interprocess::scoped_lock lock_o(output_lock);    
-        output_s.seekp(0, std::ios_base::beg);
-        for(const auto& item : data)
+        if(!data.empty())
         {
-            output_s << item << "\n";
-        }
-        output_s.flush();        
+            boost::interprocess::scoped_lock lock_o(output_lock);    
+            output_s << data.front(); // First element
+            for(auto iter = std::next(data.begin()); iter!=data.end(); iter++) // Last n-1 elements
+            {
+                output_s << "\n" << *iter;
+            }
+            output_s.flush(); 
+        }       
         // Clear input file (protocol rule)
         if(result.size() > 0)
         {
