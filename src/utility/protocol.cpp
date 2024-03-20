@@ -1,5 +1,4 @@
 #include "protocol.h"
-#include <iostream>
 namespace Utility
 {
 // Constructors    

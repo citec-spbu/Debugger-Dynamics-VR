@@ -9,12 +9,17 @@ set(ENABLE_TESTING OFF)
 # Default 'sets'
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Set debug value if not set release
 string(TOLOWER ${CMAKE_BUILD_TYPE} build_type)
 if (build_type STREQUAL debug)
+    message("--------- CMake Debug build ---------")
     set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/exec/debug)
 else()
-    set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/exec/debug)
+    message("--------- CMake Release build ---------")
+    set(CMAKE_EXE_LINKER_FLAGS "-static")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+    set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/exec/release)
 endif()
 
 # Set your own paths
@@ -56,7 +61,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${wxWidgets_INCLUDE_DIRS})
 # Testing
 if(${ENABLE_TESTING})
     enable_testing()
-
     # Test Protocol 
     add_executable(test_protocol src/utility/test_protocol.cpp src/utility/protocol.cpp)
     target_link_libraries(test_protocol ${Boost_LIBRARIES})
