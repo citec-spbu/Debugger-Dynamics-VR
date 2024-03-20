@@ -6,7 +6,7 @@
 #include <ctime>
 #include <queue>
 #include "../elements/ParamContainer.h"
-#include "../utility/protocol.h"
+#include <FileProtocol.h>
 #include "../utility/config.h"
 
 class MainFrame : public wxFrame
@@ -22,8 +22,7 @@ private:
     // Containers 
     std::map<std::string, ParamContainer*> containers; 
     // Protocol IO
-    Utility::IOFileProtocol protocol;    
-    std::queue<std::vector<std::string>> send_buffer; 
+    FileProtocol protocol;
     // Config
     Utility::Config config;
     double buffer_time;

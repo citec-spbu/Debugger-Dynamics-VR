@@ -1,5 +1,4 @@
 # Requirements
-## Boost library
 ## wxWidgets library 
 
 # Start Debugger

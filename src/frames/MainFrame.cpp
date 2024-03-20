@@ -47,14 +47,16 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     // Start IOProtocol
     if(inp && out)
     {  
-        protocol = Utility::IOFileProtocol(*inp, *out);
+        protocol.setInFile(*inp);
+        protocol.setOutFile(*out);
     }
     else // If we can't take configs  
     {
-        protocol = Utility::IOFileProtocol(Options::DEFAULT_IN_FILE_PATH, Options::DEFAULT_OUT_FILE_PATH);
+        protocol.setInFile(Options::DEFAULT_IN_FILE_PATH);
+        protocol.setOutFile(Options::DEFAULT_OUT_FILE_PATH);
     }
-    send_buffer.push({" "});
-    if(protocol.isOkey())
+    protocol.sendRequestForAllParams();
+    if(protocol.getStatus())
     {
         wxLogGeneric(wxLOG_Message, wxString::Format("Correct started FileIOProtocol input:%s output:%s",*inp,*out));
     }
@@ -119,7 +121,8 @@ bool MainFrame::updateContainer(const std::string& param, double n_value)
 void MainFrame::inputEventFromPContainers(wxCommandEvent &event) // Event after 'enter' on params 
 {    
     wxLogGeneric(wxLOG_Message, wxString::Format("Send param to outfile:%s", event.GetString().ToStdString()));
-    send_buffer.push({event.GetString().ToStdString()});
+    auto param_info = event.GetString().ToStdString();
+    protocol.changeParam(param_info.substr(0, param_info.find("=")), std::stod(param_info.substr(param_info.find("=") + 1, param_info.size()))); // Rewrite in the future
 }
 // Main Loop function
 void MainFrame::processIO()
@@ -134,29 +137,14 @@ void MainFrame::processIO()
     
     if(buffer_time > 1000.0 / Options::EXCHANGE_PER_SECOND)
     {
-        buffer_time = 0.0;    
-        std::vector<std::string> send_data = {};
-        if(!send_buffer.empty())
+        buffer_time = 0.0;   
+       
+        auto data = protocol.exchange();
+        for(auto& item : data)
         {
-            send_data = std::move(send_buffer.front()); 
-            send_buffer.pop();           
+            addContainer(item.first, item.second, true);
         }
-        auto data = protocol.exchange(send_data);
-        if(data)
-        {
-            for(auto& item : *data)
-            {
-                if(!item.empty())
-                {
-                    size_t split_index = item.find('=');
-                    addContainer(item.substr(0,split_index), std::stod(item.substr(split_index + 1, item.size())), true);
-                    
-                }
-            }
-            panel->FitInside(); // For correct showing and update Layout and ... 
-
-        }
-
+        panel->FitInside(); // For correct showing and update Layout and ... 
     }
 }
 // Realise in the future   

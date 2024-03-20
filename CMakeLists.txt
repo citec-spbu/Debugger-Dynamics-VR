@@ -25,20 +25,13 @@ endif()
 # Set your own paths
 set(wxWidgets_ROOT_DIR "C:\\wxWidgets-3.2.4")
 set(wxWidgets_LIB_DIR "C:\\wxWidgets-3.2.4\\lib\\gcc_lib")
-set(BOOST_ROOT "C:/Program Files (x86)/Boost")
 # Sources
 set(SOURCES src/Main.cpp
- src/frames/MainFrame.cpp src/elements/ParamContainer.cpp src/utility/protocol.cpp src/utility/config.cpp)
+ src/frames/MainFrame.cpp src/elements/ParamContainer.cpp src/utility/config.cpp)
 
 
-
-# Find Boost
-find_package(Boost REQUIRED) 
-set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
-set(Boost_USE_DEBUG_LIBS        OFF)  # ignore debug libs and
-set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
-set(Boost_USE_MULTITHREADED      ON)
-set(Boost_USE_STATIC_RUNTIME    OFF)
+# Protocol library
+add_subdirectory(libs/FileProtocol)
 # Find WxWidgets
 set(wxWidgets_USE_STATIC ON)
 set(wxWidgets_USE_UNICODE ON)
@@ -54,18 +47,14 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
 # Add library
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} FileProtocol)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${wxWidgets_INCLUDE_DIRS})
 
 # Testing
 if(${ENABLE_TESTING})
-    enable_testing()
-    # Test Protocol 
-    add_executable(test_protocol src/utility/test_protocol.cpp src/utility/protocol.cpp)
-    target_link_libraries(test_protocol ${Boost_LIBRARIES})
-    target_include_directories(test_protocol PUBLIC ${Boost_INCLUDE_DIRS})
-    add_test(TestProtocol test_protocol)
+    enable_testing()    
 endif()    
 
 
