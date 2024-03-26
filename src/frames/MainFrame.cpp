@@ -3,8 +3,9 @@
 
 // Events
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-   EVT_MENU(AEvents::MainFrameMenuBarIDs::appID_PATH_TO_IO, MainFrame::startFindPathIO)
-   EVT_MENU(AEvents::MainFrameMenuBarIDs::appID_NAMES_IO, MainFrame::startSetNamesIO)
+   EVT_MENU(AEvents::MainFrameMenuBarIDs::appINPUT_PATH_TO_IO, MainFrame::startFindPathInput)
+   EVT_MENU(AEvents::MainFrameMenuBarIDs::appOUTPUT_PATH_TO_IO, MainFrame::startFindPathOutput)
+   EVT_MENU(AEvents::MainFrameMenuBarIDs::appREQUEST_ALL_PARAMS, MainFrame::requestAllParams)
    EVT_COMMAND(AEvents::MainFrameMenuBarIDs::appID_INPUT_FROM_CONTAINERS, EVT_P_CONTAINER, MainFrame::inputEventFromPContainers)
 END_EVENT_TABLE()
 
@@ -23,9 +24,9 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     SetMenuBar(m_pMenuBar);
     wxMenu* m_pFileMenu = new wxMenu();
     // Set menu popup buttons
-    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appID_PATH_TO_IO, _T("&Set path to IO-files"));
-    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appID_NAMES_IO, _T("&Set names of IO-files"));
-    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appID_ADD_PARAM, _T("&Add param"));
+    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appINPUT_PATH_TO_IO, _T("&Set path to Input-file"));
+    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appOUTPUT_PATH_TO_IO, _T("&Set names of Output-file"));
+    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appREQUEST_ALL_PARAMS, _T("&Request all params"));
     m_pMenuBar->Append(m_pFileMenu, _T("&Options"));
     // Panel with ParamContainers  
     panel = new wxScrolled<wxPanel>(this, wxID_ANY);
@@ -39,6 +40,7 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     // Read from config data
     std::optional<std::string> inp = std::nullopt;
     std::optional<std::string> out = std::nullopt;
+
     if(config.isCorrectRead())
     {
         inp = config.getParam("InputFILE");
@@ -54,16 +56,16 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     {
         protocol.setInFile(Options::DEFAULT_IN_FILE_PATH);
         protocol.setOutFile(Options::DEFAULT_OUT_FILE_PATH);
-    }
-    protocol.sendRequestForAllParams();
+    }    
+
     if(protocol.getStatus())
     {
+        protocol.sendRequestForAllParams();
         wxLogGeneric(wxLOG_Message, wxString::Format("Correct started FileIOProtocol input:%s output:%s",*inp,*out));
     }
     else
     {
-        wxLogGeneric(wxLOG_Error, "FileIOProtocol isn't started - terminate application");
-        this->Destroy();
+        wxLogGeneric(wxLOG_Error, "FileIOProtocol isn't started");
     }
     
 }
@@ -132,25 +134,67 @@ void MainFrame::processIO()
     clock_t time = std::clock();
     double delta = time - last_time;
     last_time = time;
-    //
-    buffer_time += delta;
-    
-    if(buffer_time > 1000.0 / Options::EXCHANGE_PER_SECOND)
+
+    if(protocol.getStatus())
     {
-        buffer_time = 0.0;   
-       
-        auto data = protocol.exchange();
-        for(auto& item : data)
+        buffer_time += delta;
+        
+        if(buffer_time > 1000.0 / Options::EXCHANGE_PER_SECOND)
         {
-            addContainer(item.first, item.second, true);
+            buffer_time = 0.0;   
+
+            auto data = protocol.exchange();
+            for(auto& item : data)
+            {
+                addContainer(item.first, item.second, true);
+            }
+            panel->FitInside(); // For correct showing and update Layout and ... 
         }
-        panel->FitInside(); // For correct showing and update Layout and ... 
     }
 }
-// Realise in the future   
-void MainFrame::startSetNamesIO(wxCommandEvent &event)
-{    
+
+void MainFrame::startFindPathInput(wxCommandEvent &event)
+{   
+    wxFileDialog* openFileDialog = new wxFileDialog(NULL,  _("Open input file"), "", "",
+        "", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+
+	if (openFileDialog->ShowModal() == wxID_OK) 
+	{
+        std::string path = openFileDialog->GetPath().ToStdString();
+        protocol.setInFile(path);
+    }
+    else
+    {
+        wxMessageDialog *dial = new wxMessageDialog(NULL, 
+        wxT("File isn't loaded"), wxT("Info about operation"), wxOK);
+        dial->ShowModal();
+    }
+
+	// --- Clean up after ourselves ---
+	openFileDialog->Destroy();
 }
-void MainFrame::startFindPathIO(wxCommandEvent &event)
+void MainFrame::startFindPathOutput(wxCommandEvent &event)
 {
+    wxFileDialog* openFileDialog = new wxFileDialog(NULL,  _("Open output file"), "", "",
+        "", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+
+	if (openFileDialog->ShowModal() == wxID_OK) 
+	{
+        std::string path = openFileDialog->GetPath().ToStdString();
+        protocol.setOutFile(path);
+    }
+    else
+    {
+        wxMessageDialog *dial = new wxMessageDialog(NULL, 
+        wxT("File isn't loaded"), wxT("Info about operation"), wxOK);
+        dial->ShowModal();
+    }
+
+	// --- Clean up after ourselves ---
+	openFileDialog->Destroy();
+}
+
+void MainFrame::requestAllParams(wxCommandEvent &event)
+{
+    protocol.sendRequestForAllParams();
 }

@@ -16,8 +16,9 @@ private:
     wxBoxSizer* topsizer;
     wxScrolled<wxPanel>* panel;
     // Events functions
-    void startSetNamesIO(wxCommandEvent &event);
-    void startFindPathIO(wxCommandEvent &event);
+    void startFindPathInput(wxCommandEvent &event);
+    void startFindPathOutput(wxCommandEvent &event);
+    void requestAllParams(wxCommandEvent &event);
     void inputEventFromPContainers(wxCommandEvent &event);
     // Containers 
     std::map<std::string, ParamContainer*> containers; 

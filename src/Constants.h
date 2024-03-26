@@ -7,8 +7,9 @@ namespace AEvents
     {
         enum
         {
-            appID_PATH_TO_IO = 100,
-            appID_NAMES_IO,
+            appINPUT_PATH_TO_IO = 100,
+            appOUTPUT_PATH_TO_IO,
+            appREQUEST_ALL_PARAMS, 
             appID_INPUT_FROM_CONTAINERS, 
             appID_ADD_PARAM
         };
