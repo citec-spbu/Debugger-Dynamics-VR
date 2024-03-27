@@ -3,7 +3,6 @@
 
 #include <wx/wx.h>
 #include <map>
-#include <ctime>
 #include <queue>
 #include <FileProtocol.h>
 #include "../utility/config.h"
@@ -21,10 +20,14 @@ private:
     void startFindPathOutput(wxCommandEvent &event);
     void requestAllParams(wxCommandEvent &event);
     void inputEventFromPContainers(wxCommandEvent &event);
+    void changeIORate(wxCommandEvent &event);
+    void changeState(wxCommandEvent &event);
     // Containers 
     std::map<std::string, ParamContainer*> containers; 
     // Protocol IO
     FileProtocol protocol;
+    float processIORate; // Default value in milliseconds
+    bool stateIO = true;
     // Config
     Utility::Config config;
     double buffer_time;
@@ -35,7 +38,7 @@ public:
     bool deleteContainer(const std::string& param);
     bool updateContainer(const std::string& param_name, double n_value);
     // Loop function
-    void processIO();
+    void processIO(float deltaTime);
 protected:
 	DECLARE_EVENT_TABLE()
 };

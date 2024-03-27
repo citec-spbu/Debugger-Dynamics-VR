@@ -1,17 +1,22 @@
 #include "MainFrame.h"
+#include <wx/numdlg.h>
 #include "../elements/ParamContainer.h"
 #include "../Constants.h"
 
-// Events
+// ----------  Events  ----------
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
    EVT_MENU(AEvents::MainFrameMenuBarIDs::appINPUT_PATH_TO_IO, MainFrame::startFindPathInput)
    EVT_MENU(AEvents::MainFrameMenuBarIDs::appOUTPUT_PATH_TO_IO, MainFrame::startFindPathOutput)
    EVT_MENU(AEvents::MainFrameMenuBarIDs::appREQUEST_ALL_PARAMS, MainFrame::requestAllParams)
+   EVT_MENU(AEvents::MainFrameMenuBarIDs::appCHANGE_IO_RATE, MainFrame::changeIORate)
+   EVT_MENU(AEvents::MainFrameMenuBarIDs::appENABLE_IO_PROCESS, MainFrame::changeState)
+   EVT_MENU(AEvents::MainFrameMenuBarIDs::appDISABLE_IO_PROCESS, MainFrame::changeState)
    EVT_COMMAND(AEvents::MainFrameMenuBarIDs::appID_INPUT_FROM_CONTAINERS, EVT_P_CONTAINER, MainFrame::inputEventFromPContainers)
 END_EVENT_TABLE()
 
 MainFrame::MainFrame(const std::string& title,const wxSize& size)
        : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, size),
+       processIORate(1000.0 / Options::EXCHANGE_PER_SECOND),
        config(Options::CONFIG_PATH) // Load config file
 {
     wxLogGeneric(wxLOG_Message, wxT("Start application - create main frame..."));
@@ -23,12 +28,20 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     // Menu bar
     wxMenuBar *m_pMenuBar = new wxMenuBar(); 
     SetMenuBar(m_pMenuBar);
-    wxMenu* m_pFileMenu = new wxMenu();
+    // -- State menu --   
+    wxMenu* m_pStateMenu = new wxMenu();
     // Set menu popup buttons
-    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appINPUT_PATH_TO_IO, _T("&Set path to Input-file"));
-    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appOUTPUT_PATH_TO_IO, _T("&Set path to Output-file"));
-    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appREQUEST_ALL_PARAMS, _T("&Request all params"));
-    m_pMenuBar->Append(m_pFileMenu, _T("&Options"));
+    m_pStateMenu->Append(AEvents::MainFrameMenuBarIDs::appENABLE_IO_PROCESS, _T("&Enable read/write"));
+    m_pStateMenu->Append(AEvents::MainFrameMenuBarIDs::appDISABLE_IO_PROCESS, _T("&Disable read/write"));
+    m_pMenuBar->Append(m_pStateMenu, _T("&StateIO"));
+    // -- Options menu --
+    wxMenu* m_pOptionsMenu = new wxMenu();
+    // Set menu popup buttons
+    m_pOptionsMenu->Append(AEvents::MainFrameMenuBarIDs::appINPUT_PATH_TO_IO, _T("&Set path to Input-file"));
+    m_pOptionsMenu->Append(AEvents::MainFrameMenuBarIDs::appOUTPUT_PATH_TO_IO, _T("&Set path to Output-file"));
+    m_pOptionsMenu->Append(AEvents::MainFrameMenuBarIDs::appREQUEST_ALL_PARAMS, _T("&Request all params"));
+    m_pOptionsMenu->Append(AEvents::MainFrameMenuBarIDs::appCHANGE_IO_RATE, _T("&Change read/write rate"));
+    m_pMenuBar->Append(m_pOptionsMenu, _T("&Options"));
     // Panel with ParamContainers  
     panel = new wxScrolled<wxPanel>(this, wxID_ANY);
     panel->SetScrollRate(0, FromDIP(10));
@@ -70,7 +83,7 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     }
     
 }
-// Containers functions
+// ---------- Containers functions ----------
 bool MainFrame::addContainer(const std::string& param, double value, bool update)
 {
     wxLogGeneric(wxLOG_Message, wxString::Format("Add new container:%s %f", param, value));
@@ -120,27 +133,14 @@ bool MainFrame::updateContainer(const std::string& param, double n_value)
     }
     return false;
 }
-//Events functions
-void MainFrame::inputEventFromPContainers(wxCommandEvent &event) // Event after 'enter' on params 
-{    
-    wxLogGeneric(wxLOG_Message, wxString::Format("Send param to outfile:%s", event.GetString().ToStdString()));
-    auto param_info = event.GetString().ToStdString();
-    protocol.changeParam(param_info.substr(0, param_info.find("=")), std::stod(param_info.substr(param_info.find("=") + 1, param_info.size()))); // Rewrite in the future
-}
-// Main Loop function
-void MainFrame::processIO()
+// ---------- Main Loop function ----------
+void MainFrame::processIO(float deltaTime)
 {
-    // Calculate delta
-    static clock_t last_time = 0; 
-    clock_t time = std::clock();
-    double delta = time - last_time;
-    last_time = time;
-
-    if(protocol.getStatus())
+    if(protocol.getStatus() && stateIO)
     {
-        buffer_time += delta;
+        buffer_time += deltaTime;
         
-        if(buffer_time > 1000.0 / Options::EXCHANGE_PER_SECOND)
+        if(buffer_time > processIORate)
         {
             buffer_time = 0.0;   
 
@@ -153,10 +153,17 @@ void MainFrame::processIO()
         }
     }
 }
+// ---------- Events functions ----------
+void MainFrame::inputEventFromPContainers(wxCommandEvent &event) // Event after 'enter' on params 
+{    
+    wxLogGeneric(wxLOG_Message, wxString::Format("Send param to outfile:%s", event.GetString().ToStdString()));
+    auto param_info = event.GetString().ToStdString();
+    protocol.changeParam(param_info.substr(0, param_info.find("=")), std::stod(param_info.substr(param_info.find("=") + 1, param_info.size()))); // Rewrite in the future
+}
 
 void MainFrame::startFindPathInput(wxCommandEvent &event)
 {   
-    wxFileDialog* openFileDialog = new wxFileDialog(NULL,  _("Open input file"), "", "",
+    wxFileDialog* openFileDialog = new wxFileDialog(nullptr,  _("Open input file"), "", "",
         "", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
 
 	if (openFileDialog->ShowModal() == wxID_OK) 
@@ -166,7 +173,7 @@ void MainFrame::startFindPathInput(wxCommandEvent &event)
     }
     else
     {
-        wxMessageDialog *dial = new wxMessageDialog(NULL, 
+        wxMessageDialog *dial = new wxMessageDialog(nullptr, 
         wxT("File isn't loaded"), wxT("Info about operation"), wxOK);
         dial->ShowModal();
     }
@@ -176,7 +183,7 @@ void MainFrame::startFindPathInput(wxCommandEvent &event)
 }
 void MainFrame::startFindPathOutput(wxCommandEvent &event)
 {
-    wxFileDialog* openFileDialog = new wxFileDialog(NULL,  _("Open output file"), "", "",
+    wxFileDialog* openFileDialog = new wxFileDialog(nullptr,  _("Open output file"), "", "",
         "", wxFD_OPEN|wxFD_FILE_MUST_EXIST);
 
 	if (openFileDialog->ShowModal() == wxID_OK) 
@@ -198,4 +205,36 @@ void MainFrame::startFindPathOutput(wxCommandEvent &event)
 void MainFrame::requestAllParams(wxCommandEvent &event)
 {
     protocol.sendRequestForAllParams();
+}
+
+void MainFrame::changeIORate(wxCommandEvent &event)
+{
+    wxNumberEntryDialog* openNumberDialog = new wxNumberEntryDialog(nullptr,  _("Write the number of updates per second"), "", "Updates per second",
+        static_cast<long>(1000.0 / processIORate), 1, 100);
+    if (openNumberDialog->ShowModal() == wxID_OK) 
+	{
+        double perUpdate = static_cast<double>(openNumberDialog->GetValue()); 
+
+        processIORate = 1000.0 / perUpdate;
+        wxLogGeneric(wxLOG_Message, wxString::Format("Update IORate:%i", openNumberDialog->GetValue()));
+    }
+    else
+    {
+        wxLogGeneric(wxLOG_Error, wxString("Can't open modal window for input rate"));
+    }
+    openNumberDialog->Destroy();
+}
+
+void MainFrame::changeState(wxCommandEvent &event)
+{
+    if(event.GetId() == AEvents::MainFrameMenuBarIDs::appENABLE_IO_PROCESS)
+    {
+        stateIO = true;
+        wxLogGeneric(wxLOG_Message, wxString("Enable IO processing"));
+    }
+    else
+    {
+        stateIO = false;
+        wxLogGeneric(wxLOG_Message, wxString("Disable IO processing"));
+    }
 }

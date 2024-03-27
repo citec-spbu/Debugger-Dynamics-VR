@@ -1,4 +1,5 @@
 #include "Main.h"
+#include <ctime>
 // Implement "main" function for wxWidgets
 IMPLEMENT_APP(MyApp)
 
@@ -21,10 +22,16 @@ bool MyApp::OnInit()
 
 void MyApp::onIdle(wxIdleEvent& evt)
 {
+    // Calculate delta time
+    static clock_t last_time = 0; 
+    clock_t time = std::clock();
+    float deltaTime = time - last_time;
+    last_time = time;
+
     if(!evt.MoreRequested())
     {
         evt.RequestMore();
     }
 
-    frame->processIO();
+    frame->processIO(deltaTime);
 }   
