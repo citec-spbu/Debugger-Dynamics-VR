@@ -1,5 +1,6 @@
 #include "MainFrame.h"
-#include <iostream>
+#include "../elements/ParamContainer.h"
+#include "../Constants.h"
 
 // Events
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
@@ -25,7 +26,7 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     wxMenu* m_pFileMenu = new wxMenu();
     // Set menu popup buttons
     m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appINPUT_PATH_TO_IO, _T("&Set path to Input-file"));
-    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appOUTPUT_PATH_TO_IO, _T("&Set names of Output-file"));
+    m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appOUTPUT_PATH_TO_IO, _T("&Set path to Output-file"));
     m_pFileMenu->Append(AEvents::MainFrameMenuBarIDs::appREQUEST_ALL_PARAMS, _T("&Request all params"));
     m_pMenuBar->Append(m_pFileMenu, _T("&Options"));
     // Panel with ParamContainers  

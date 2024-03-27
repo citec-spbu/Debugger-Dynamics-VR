@@ -5,9 +5,10 @@
 #include <map>
 #include <ctime>
 #include <queue>
-#include "../elements/ParamContainer.h"
 #include <FileProtocol.h>
 #include "../utility/config.h"
+
+class ParamContainer;
 
 class MainFrame : public wxFrame
 {

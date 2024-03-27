@@ -1,4 +1,7 @@
 #include "ParamContainer.h"
+#include <string>
+#include <wx/spinctrl.h>
+#include "../Constants.h"
 
 // Events
 wxDEFINE_EVENT(EVT_P_CONTAINER, wxCommandEvent);

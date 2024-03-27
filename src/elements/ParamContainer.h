@@ -1,13 +1,14 @@
 #ifndef ParamContainer_H
 #define ParamContainer_H
 
-#include <string>
-#include "../Constants.h"
 #include "wx/wx.h"
-#include <wx/spinctrl.h>
+
 
 // Make event for process enter in containers 
 wxDECLARE_EVENT(EVT_P_CONTAINER, wxCommandEvent);
+
+class wxSpinCtrlDouble;
+class wxSpinDoubleEvent;
 
 class ParamContainer : public wxPanel
 {
