@@ -17,7 +17,7 @@ if (build_type STREQUAL debug)
     set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/exec/debug)
 else()
     message("--------- CMake Release build ---------")
-    set(CMAKE_EXE_LINKER_FLAGS "-static")
+    set(CMAKE_EXE_LINKER_FLAGS "-static -mwindows")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3")
     set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/exec/release)
 endif()
@@ -45,11 +45,9 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
                        )
                   
 # Add library
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} FileProtocol)
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${wxWidgets_INCLUDE_DIRS})
 
 # Testing
