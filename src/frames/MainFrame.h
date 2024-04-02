@@ -13,8 +13,10 @@ class MainFrame : public wxFrame
 {
 private: 
     // Components
-    wxBoxSizer* topsizer;
+    wxBoxSizer* mainsizer;
+    wxBoxSizer* panelsizer;
     wxScrolled<wxPanel>* panel;
+    wxTextCtrl* amount_of_params;
     // Events functions
     void startFindPathInput(wxCommandEvent &event);
     void startFindPathOutput(wxCommandEvent &event);
@@ -24,6 +26,8 @@ private:
     void changeState(wxCommandEvent &event);
     // Containers 
     std::map<std::string, ParamContainer*> containers; 
+    int amount_of_containers = 0;
+    void updateAmountOfContainersTextCtrl(int amount);
     // Protocol IO
     FileProtocol protocol;
     float processIORate; // Default value in milliseconds

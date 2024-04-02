@@ -34,7 +34,8 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     m_pStateMenu->Append(AEvents::MainFrameMenuBarIDs::appENABLE_IO_PROCESS, _T("&Enable read/write"));
     m_pStateMenu->Append(AEvents::MainFrameMenuBarIDs::appDISABLE_IO_PROCESS, _T("&Disable read/write"));
     m_pMenuBar->Append(m_pStateMenu, _T("&StateIO"));
-    // -- Options menu --
+    
+    // ------- Options menu -------
     wxMenu* m_pOptionsMenu = new wxMenu();
     // Set menu popup buttons
     m_pOptionsMenu->Append(AEvents::MainFrameMenuBarIDs::appINPUT_PATH_TO_IO, _T("&Set path to Input-file"));
@@ -43,12 +44,27 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
     m_pOptionsMenu->Append(AEvents::MainFrameMenuBarIDs::appCHANGE_IO_RATE, _T("&Change read/write rate"));
     m_pMenuBar->Append(m_pOptionsMenu, _T("&Options"));
     // Panel with ParamContainers  
-    panel = new wxScrolled<wxPanel>(this, wxID_ANY);
+    panel = new wxScrolled<wxPanel>(this, wxID_ANY, wxDefaultPosition, wxSize(Options::WINDOW_WIDTH, Options::WINDOW_HEIGHT));
     panel->SetScrollRate(0, FromDIP(10));
-    // Main Sizer
-    topsizer = new wxBoxSizer( wxVERTICAL );  
-    panel->SetSizerAndFit(topsizer); // While the program is running, we will add containers to the sizer dynamically
-    
+    // Sizers
+    mainsizer = new wxBoxSizer( wxVERTICAL );  
+    panelsizer = new wxBoxSizer( wxVERTICAL );  
+
+    panel->SetSizer(panelsizer); // While the program is running, we will add containers to the sizer dynamically
+    // Text Ctrl about amount of params
+    wxTextCtrl* static_text_amount_of_params = new wxTextCtrl( this, wxID_ANY, "Amount of params:", wxDefaultPosition,
+         wxDefaultSize, // Size
+             wxTE_READONLY);
+    amount_of_params = new wxTextCtrl( this, wxID_ANY, "0", wxDefaultPosition,
+         wxDefaultSize, // Size
+             wxTE_READONLY);
+    wxBoxSizer* sizer_a_o_p = new wxBoxSizer( wxHORIZONTAL );
+    sizer_a_o_p->Add(static_text_amount_of_params, wxALIGN_LEFT);
+    sizer_a_o_p->Add(amount_of_params, wxALIGN_RIGHT);
+    //
+    mainsizer->Add(panel, 1, wxEXPAND | wxALL | wxALIGN_TOP, 1);
+    mainsizer->Add(sizer_a_o_p, 0, wxALIGN_CENTER_HORIZONTAL, 0);
+    SetSizer(mainsizer);
     wxLogGeneric(wxLOG_Message, "Created main frame.");    
     wxLogGeneric(wxLOG_Message, "Start FileIOProtocol");
     // Read from config data
@@ -60,7 +76,8 @@ MainFrame::MainFrame(const std::string& title,const wxSize& size)
         inp = config.getParam("InputFILE");
         out = config.getParam("OutputFILE"); 
     }    
-    // Start IOProtocol
+
+    // -------- Start IOProtocol --------
     if(inp && out)
     {  
         protocol.setInFile(*inp);
@@ -99,13 +116,15 @@ bool MainFrame::addContainer(const std::string& param, double value, bool update
     }
     ParamContainer* container = new ParamContainer(panel, wxID_ANY, param, value);   
     // Add to sizer/panel (to the end)
-    auto res_obj = topsizer->Add(container,
+    auto res_obj = panelsizer->Add(container,
         0,            // make vertically stretchable
         wxEXPAND |    // make horizontally stretchable
         wxALL,        //   and make border all around
         1 );
     if(res_obj != nullptr)
     {
+        amount_of_containers++;
+        updateAmountOfContainersTextCtrl(amount_of_containers);
         containers[param] = container;    
         return true;
     }    
@@ -116,6 +135,8 @@ bool MainFrame::deleteContainer(const std::string& param)
     wxLogGeneric(wxLOG_Message, wxString("Delete container:" + param));
     if(containers.find(param) != containers.end())
     {
+        amount_of_containers--;
+        updateAmountOfContainersTextCtrl(amount_of_containers);
         containers[param]->Destroy(); // Destroy ParamContainer
         containers.erase(param); 
         return true;
@@ -237,4 +258,9 @@ void MainFrame::changeState(wxCommandEvent &event)
         stateIO = false;
         wxLogGeneric(wxLOG_Message, wxString("Disable IO processing"));
     }
+}
+
+void MainFrame::updateAmountOfContainersTextCtrl(int amount)
+{
+    amount_of_params->SetValue(wxString::Format("%i",amount));
 }
