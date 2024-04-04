@@ -1,0 +1,16 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"D:/users/Sofya/Documents/Unreal Projects/RusAtom/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset",
+				"D:/users/Sofya/Documents/Unreal Projects/RusAtom/Content/VRTemplate/Maps/VRTemplateMap.umap",
+				"D:/users/Sofya/Documents/Unreal Projects/RusAtom/Content/Level1.umap",
+				"D:/users/Sofya/Documents/Unreal Projects/RusAtom/Content/Diamond.uasset",
+				"D:/users/Sofya/Documents/Unreal Projects/RusAtom/Content/VRTemplate/Maps/VRTemplateMap_BuiltData.uasset"
+			]
+		}
+	]
+}
