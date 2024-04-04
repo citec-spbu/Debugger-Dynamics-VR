@@ -27,7 +27,11 @@ public:
 	* Change param and send it to IOProtocol
 	**/
 	UFUNCTION(BlueprintCallable)
-	void ChangeParam(FString Param, double Value);
+	bool ChangeParam(FString Param, double Value);
+	UFUNCTION(BlueprintCallable)
+	bool AddParam(FString Param, double Value);
+	UFUNCTION(BlueprintCallable)
+	void SendAllParams();
 	/**
 	* Set new timer with "Amount" updates per second
 	**/
@@ -40,4 +44,5 @@ private:
 	void TimerLoop();
 
 	FileProtocol* IOHandler;	
+	TMap<FString, double> ParamsMap;
 };
