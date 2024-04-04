@@ -23,6 +23,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FMultiDynamicDelegate OnParamChanged;
+
 	/**
 	* Change param and send it to IOProtocol
 	**/
