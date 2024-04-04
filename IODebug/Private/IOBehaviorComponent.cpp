@@ -14,8 +14,9 @@ void UIOBehaviorComponent::BeginPlay()
 	Super::BeginPlay();
 
 	auto* IODebugSubsystemHandler = GetWorld()->GetSubsystem<UIODebugSubsystem>();
-	if (IODebugSubsystemHandler)
+	if (IODebugSubsystemHandler && !ParamName.IsEmpty())
 	{
+		IODebugSubsystemHandler->AddParam(ParamName, ParamValue);
 		IODebugSubsystemHandler->OnParamChanged.AddDynamic(this, &UIOBehaviorComponent::TakeParamChanged);
 	}
 }	
@@ -26,12 +27,13 @@ void UIOBehaviorComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UIOBehaviorComponent::UpdateValue(double NewValue)
+void UIOBehaviorComponent::UpdateParam(double NewValue)
 {
 	auto* IODebugSubsystemHandler = GetWorld()->GetSubsystem<UIODebugSubsystem>();
-	if (IODebugSubsystemHandler) 
+	if (IODebugSubsystemHandler && !ParamName.IsEmpty())
 	{
-		IODebugSubsystemHandler->ChangeParam(ParamName, NewValue);
+		ParamValue = NewValue;
+		IODebugSubsystemHandler->ChangeParam(ParamName, ParamValue);
 	}
 }
 
@@ -39,6 +41,7 @@ void UIOBehaviorComponent::TakeParamChanged(FString NParamName, float NParamValu
 {
 	if (ParamName == NParamName)
 	{
+		ParamValue = NParamValue;
 		OnParamChanged.Broadcast(NParamValue);
 	}
 }

@@ -20,7 +20,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
 	UFUNCTION()
 	void TakeParamChanged(FString NParamName, float NParamValue);
 public:	
@@ -29,10 +29,10 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	FString ParamName;
 	UPROPERTY(EditDefaultsOnly)
-	double Value;
+	double ParamValue;
 		
 	UFUNCTION(BlueprintCallable)
-	void UpdateValue(double NewValue);
+	void UpdateParam(double NewValue);
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
