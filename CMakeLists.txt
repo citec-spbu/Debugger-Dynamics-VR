@@ -22,8 +22,16 @@ endif()
 
 if (WIN32)
     # Set your own paths
-    set(wxWidgets_ROOT_DIR "C:\\wxWidgets-3.2.4")
-    set(wxWidgets_LIB_DIR "C:\\wxWidgets-3.2.4\\lib\\gcc_lib")
+    if(NOT DEFINED ${wxWidgets_ROOT_DIR})
+        set(wxDefault_ROOT_DIR "C:\\wxWidgets-3.2.4") 
+        message("-DwxWidgets_ROOT_DIR is undefined, set default: ${wxDefault_ROOT_DIR}")
+        set(wxWidgets_ROOT_DIR ${wxDefault_ROOT_DIR})
+    endif()
+    if(NOT DEFINED ${wxWidgets_LIB_DIR})
+        set(wxDefault_LIB_DIR "C:\\wxWidgets-3.2.4\\lib\\gcc_lib") 
+        message("-DwxWidgets_LIB_DIR is undefined, set default: ${wxDefault_ROOT_DIR}")
+        set(wxWidgets_LIB_DIR ${wxDefault_LIB_DIR})
+    endif()
 endif()
 
 IF(NOT ${CMAKE_BUILD_TYPE} MATCHES "Release")
