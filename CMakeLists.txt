@@ -94,7 +94,7 @@ else ()
 endif ()
 
 # Sources
-set(SOURCES src/Main.cpp
+set(SOURCES src/main.cpp
  src/frames/MainFrame.cpp src/elements/ParamContainer.cpp src/utility/config.cpp)
 
 
