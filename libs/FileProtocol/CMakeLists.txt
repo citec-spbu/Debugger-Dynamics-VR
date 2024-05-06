@@ -11,13 +11,13 @@ elseif(UNIX)
     set(OS_FOLDER Unix)
 endif()
 
-file(GLOB OS_SPECIFIC src/${OS_FOLDER}/*)
-
-
 set(SOURCES 
     include/FileProtocol.h 
     src/FileProtocol.cpp
-    ${OS_SPECIFIC}
+    src/File.h
+    src/data_tools.h
+    src/data_tools.cpp
+    src/${OS_FOLDER}/File.cpp
     )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})

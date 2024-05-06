@@ -1,8 +1,21 @@
-#include <File.h>
+#ifdef __linux__
+
+#include "../File.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <climits>
+
+struct File::FileDescriptor
+{
+    int fd;
+    FileDescriptor() = default;
+    FileDescriptor(int fd) : fd(fd) {}
+    operator int() const
+    {
+        return fd;
+    }
+};
 
 
 File::File(const std::string& path)
@@ -55,7 +68,7 @@ void File::unlock()
 }
 
 
-bool File::isEmpty()
+bool File::isEmpty() const
 {
     if (m_fd == -1)
         return 1;
@@ -87,3 +100,5 @@ File::~File()
     if (m_fd != -1)
         close(m_fd);
 }
+
+#endif
