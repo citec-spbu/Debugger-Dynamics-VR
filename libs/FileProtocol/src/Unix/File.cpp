@@ -18,32 +18,32 @@ struct File::FileDescriptor
 };
 
 
-File::File(const std::string& path)
+File::File(const std::string& path) : m_fd(new FileDescriptor)
 {
-    m_fd = open(path.c_str(), O_RDWR);
+    *m_fd = open(path.c_str(), O_RDWR);
 }
 
 
 bool File::write(const std::string& buff)
 {
-    if (lseek(m_fd, 0, SEEK_SET) == -1)
+    if (lseek(*m_fd, 0, SEEK_SET) == -1)
         return 0;
 
-    return -1 != ::write(m_fd, buff.c_str(), buff.size());
+    return -1 != ::write(*m_fd, buff.c_str(), buff.size());
 }
 
 
 std::string File::read()
 {
     struct stat st; 
-    if (m_fd == -1 || fstat(m_fd, &st) || lseek(m_fd, 0, SEEK_SET) == -1)
+    if (*m_fd == -1 || fstat(*m_fd, &st) || lseek(*m_fd, 0, SEEK_SET) == -1)
         return "";
 
     size_t sz = st.st_size;
 
     std::string buff(sz, 0);
 
-    if (::read(m_fd, buff.data(), sz) == -1)
+    if (::read(*m_fd, buff.data(), sz) == -1)
         return "";
 
     return buff;
@@ -52,7 +52,7 @@ std::string File::read()
 
 bool File::lock()
 {
-    if (lseek(m_fd, 0, SEEK_SET) == -1 || lockf(m_fd, F_TLOCK, INT_MAX) == -1)
+    if (lseek(*m_fd, 0, SEEK_SET) == -1 || lockf(*m_fd, F_TLOCK, INT_MAX) == -1)
         return 0;
     
     m_locked = 1;
@@ -62,19 +62,19 @@ bool File::lock()
 
 void File::unlock()
 {
-    lseek(m_fd, 0, SEEK_SET);
-    lockf(m_fd, F_ULOCK, INT_MAX);
+    lseek(*m_fd, 0, SEEK_SET);
+    lockf(*m_fd, F_ULOCK, INT_MAX);
     m_locked = 0;
 }
 
 
-bool File::isEmpty() const
+bool File::isEmpty()
 {
-    if (m_fd == -1)
+    if (*m_fd == -1)
         return 1;
 
     struct stat st;
-    fstat(m_fd, &st);
+    fstat(*m_fd, &st);
 
     return st.st_size == 0;
 }
@@ -82,13 +82,13 @@ bool File::isEmpty() const
 
 bool File::clear()
 {
-    return ftruncate(m_fd, 0) == -1;
+    return ftruncate(*m_fd, 0) == -1;
 }
 
 
-File::operator bool()
+File::operator bool() const
 {
-    return m_fd != -1;
+    return *m_fd != -1;
 }
 
 
@@ -97,8 +97,8 @@ File::~File()
     if (m_locked)
         unlock();
 
-    if (m_fd != -1)
-        close(m_fd);
+    if (*m_fd != -1)
+        close(*m_fd);
 }
 
 #endif
