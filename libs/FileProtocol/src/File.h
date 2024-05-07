@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <memory>
 
 // RAII file class wrapper
 class File
@@ -20,12 +21,13 @@ public:
     bool isEmpty();
     bool clear();
 
-    operator bool();
+    operator bool() const;
 
     ~File();
 
 private:
     
-    int m_fd = -1;
+    struct FileDescriptor;
+    std::unique_ptr<FileDescriptor> m_fd;
     bool m_locked = 0;
 };
