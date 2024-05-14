@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\RusAtom.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\RusAtom.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\RusAtomEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\IODebug">
+      <UniqueIdentifier>{9BB7272B-70E4-321A-B36E-19267B5365A7}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\IODebug\IODebug.Build.cs">
+      <Filter>Source\IODebug</Filter>
+    </None>
+    <None Include="..\..\Source\IODebug\README.md">
+      <Filter>Source\IODebug</Filter>
+    </None>
+    <Filter Include="Source\IODebug\Private">
+      <UniqueIdentifier>{C977CE03-2B03-353B-A399-ED84D4C91920}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\IODebug\Private\data_tools.cpp">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\IODebug\Private\data_tools.h">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\IODebug\Private\FileProtocol.cpp">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\IODebug\Private\FileProtocol.h">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\IODebug\Private\file_tools.cpp">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\IODebug\Private\file_tools.h">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\IODebug\Private\IOBehaviorComponent.cpp">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\IODebug\Private\IODebug.cpp">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\IODebug\Private\IODebugSubsystem.cpp">
+      <Filter>Source\IODebug\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\IODebug\Public">
+      <UniqueIdentifier>{7FA15784-9BD7-361C-9229-3D1CE8605C43}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\IODebug\Public\IOBehaviorComponent.h">
+      <Filter>Source\IODebug\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\IODebug\Public\IODebugSubsystem.h">
+      <Filter>Source\IODebug\Public</Filter>
+    </ClInclude>
+    <Filter Include="Source\RusAtom">
+      <UniqueIdentifier>{EAD3B65A-806A-3E36-90B6-08F55260EBF7}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\RusAtom\RusAtom.Build.cs">
+      <Filter>Source\RusAtom</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\RusAtom\RusAtom.cpp">
+      <Filter>Source\RusAtom</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\RusAtom\RusAtom.h">
+      <Filter>Source\RusAtom</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
