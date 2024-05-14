@@ -3,6 +3,23 @@
 	"EngineAssociation": "5.3",
 	"Category": "",
 	"Description": "",
+	"Modules": [
+		{
+			"Name": "RusAtom",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+
+		{
+			"Name": "IODebug",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+
+	],
 	"Plugins": [
 		{
 			"Name": "OpenXR",

@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "RusAtom",
+			"Path": "..\\Source\\RusAtom.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "RusAtomEditor",
+			"Path": "..\\Source\\RusAtomEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

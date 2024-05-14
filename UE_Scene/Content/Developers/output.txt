@@ -1,0 +1,7 @@
+Diam_location=1.000000
+blue_button=0.000000
+green_button=0.000000
+red_button=0.000000
+IOB_Diamond=0.000000
+IOB_torus=0.020000
+IOB_cube=0.000000
