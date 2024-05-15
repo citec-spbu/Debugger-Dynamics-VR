@@ -2,7 +2,7 @@
 
 
 #include "IODebugSubsystem.h"
-#include "FileProtocol.h"
+#include "FileProtocol/include/FileProtocol.h"
 
 
 void UIODebugSubsystem::Initialize(FSubsystemCollectionBase& Collection) 
