@@ -1,5 +1,7 @@
 #include "Main.h"
 #include <ctime>
+#include <thread>
+
 // Implement "main" function for wxWidgets
 IMPLEMENT_APP(MyApp)
 
@@ -22,10 +24,15 @@ bool MyApp::OnInit()
 
 void MyApp::onIdle(wxIdleEvent& evt)
 {
+    using namespace std::chrono;
+
+    // prevent high cpu usage
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
     // Calculate delta time
-    static clock_t last_time = 0; 
-    clock_t time = std::clock();
-    float deltaTime = time - last_time;
+    static steady_clock::time_point last_time = steady_clock::now();
+    steady_clock::time_point time = steady_clock::now();
+    float deltaTime = duration_cast<milliseconds>(time - last_time).count();
     last_time = time;
 
     if(!evt.MoreRequested())
