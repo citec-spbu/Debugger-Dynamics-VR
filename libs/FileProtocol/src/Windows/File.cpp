@@ -30,7 +30,8 @@ bool File::write(const std::string& buff)
 {
     SetFilePointer(*m_fd, 0, 0, FILE_BEGIN);
 
-    return WriteFile(*m_fd, buff.c_str(), buff.size(), 0, NULL);
+    unsigned long dummy;
+    return WriteFile(*m_fd, buff.c_str(), buff.size(), &dummy, NULL);
 }
 
 
@@ -41,7 +42,8 @@ std::string File::read()
     int sz = GetFileSize(*m_fd, NULL);
     std::string buff(sz,0);
 
-    if (!ReadFile(*m_fd, buff.data(), sz, NULL, NULL))
+    unsigned long dummy;
+    if (!ReadFile(*m_fd, buff.data(), sz, &dummy, NULL))
         return "";
 
     return buff;
